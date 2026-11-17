@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>חנות אפליקציות - הורדה ישירה</title>
+<meta name="description" content="תיאור של שורה או שתיים שיופיע בגוגל">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://USER.github.io/REPO/">
+<meta property="og:title" content="חנות אפליקציות">
+<meta property="og:description" content="תיאור קצר לשיתוף">
+<meta property="og:image" content="https://USER.github.io/REPO/og-image.png">
+<meta property="og:locale" content="he_IL">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#downloads">דלג להורדה</a>
+
+<header class="top">
+  <a class="brand" href="#home"><span data-app-name>חנות אפליקציות</span></a>
+  <nav>
+    <a href="#features">תכונות</a>
+    <a href="#downloads">הורדה</a>
+    <a href="#guide">מדריך</a>
+    <a href="#contact">צור קשר</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <h1>חנות אפליקציות</h1>
+    <p>מורידים ומתקינים אפליקציות במקום אחד, בקלות ובמהירות.</p>
+    <a class="btn" href="#downloads">הורידו עכשיו</a>
+    <a class="btn ghost" href="#features">איך זה עובד?</a>
+  </section>
+
+  <section id="features">
+    <h2>תכונות</h2>
+    <article class="feat">
+      <div>
+        <h3>תכונה ראשונה</h3>
+        <p>הסבר קצר ופשוט על התכונה, במילים של המשתמש.</p>
+        <ul><li>יתרון ראשון</li><li>יתרון שני</li></ul>
+      </div>
+      <img src="assets/shots/screen1.png" alt="צילום מסך של התכונה הראשונה" loading="lazy">
+    </article>
+    <article class="feat">
+      <div>
+        <h3>תכונה שנייה</h3>
+        <p>הסבר קצר ופשוט על התכונה.</p>
+        <ul><li>יתרון ראשון</li><li>יתרון שני</li></ul>
+      </div>
+      <img src="assets/shots/screen2.png" alt="צילום מסך של התכונה השנייה" loading="lazy">
+    </article>
+  </section>
+
+  <section id="downloads">
+    <h2>הורדות ועדכונים</h2>
+    <div id="release" class="box">טוען נתונים…</div>
+    <p><a id="updates-link" href="#">הרשמה לעדכונים על גרסאות חדשות</a></p>
+  </section>
+
+  <section id="guide">
+    <h2>מדריך למשתמש</h2>
+    <div id="guide-content" class="box prose">טוען נתונים…</div>
+  </section>
+
+  <section id="contact">
+    <h2>כתבו לנו</h2>
+    <p>הערות, שאלות והצעות לשיפור יתקבלו בברכה.</p>
+    <form id="contact-form" class="box" method="POST">
+      <label>שם (אופציונלי)<input name="name" autocomplete="name"></label>
+      <label>אימייל*<input name="email" type="email" required autocomplete="email"></label>
+      <label>הודעה*<textarea name="message" rows="5" required></textarea></label>
+      <button class="btn" type="submit">שלח</button>
+      <p id="form-status" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <span data-app-name>חנות אפליקציות</span> · <a id="mail-link" href="#">אימייל</a> · כל הזכויות שמורות
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

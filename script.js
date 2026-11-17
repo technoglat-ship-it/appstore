@@ -1,6 +1,6 @@
 /* ===== הגדרות: ערכו רק את הבלוק הזה ===== */
 const CONFIG = {
-  OWNER: "USER",                 // שם המשתמש שלכם ב-GitHub
+  OWNER: "טכנוגלאט",                 // שם המשתמש שלכם ב-GitHub
   REPO: "REPO",                  // שם המאגר
   APP_NAME: "חנות אפליקציות",
   EMAIL: "you@gmail.com",

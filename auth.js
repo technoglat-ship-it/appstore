@@ -28,7 +28,7 @@ function renderAuthLinks() {
   if (!box) return;
   const s = getSession();
   box.innerHTML = s
-    ? (s.role === "admin" ? '<a href="admin.html">ניהול</a>' : "") + '<a href="#" id="logout">התנתקות</a>'
+    ? (s.role === "admin" ? '<a href="admin.html">ניהול</a>' : "") + '<a href="password.html">שינוי סיסמה</a><a href="#" id="logout">התנתקות</a>'
     : '<a href="account.html">התחברות / הרשמה</a>';
   const lo = document.getElementById("logout");
   if (lo) lo.onclick = e => { e.preventDefault(); localStorage.removeItem(TOKEN_KEY); location.reload(); };

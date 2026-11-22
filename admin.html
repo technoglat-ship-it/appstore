@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<title>ניהול האתר</title></head>
+<body>
+<header class="top"><a class="brand" href="index.html">חנות אפליקציות</a><nav><a href="index.html">חזרה לאתר</a></nav></header>
+<main><section>
+<h2>ניהול האתר</h2>
+<div class="box">
+  <label>מה לשנות באתר?
+  <textarea id="req" rows="5" placeholder="למשל: להוסיף סעיף שאלות נפוצות ולשנות את צבע הכפתורים לכתום"></textarea></label>
+  <button class="btn" id="go" type="button">הכן הצעה</button> <span id="status" role="status"></span>
+</div>
+<div id="result" hidden>
+  <h3>הצעה לשינוי</h3>
+  <p id="summary"></p><p id="files"></p>
+  <iframe class="preview" id="pv" sandbox="" title="תצוגה מקדימה"></iframe>
+  <p>בתצוגה המקדימה אזורי ההורדה והמדריך מוצגים ריקים, זה תקין.</p>
+  <p><button class="btn" id="apply" type="button">אשר ופרסם</button><button class="btn ghost" id="cancel" type="button">בטל</button></p>
+</div>
+</section></main>
+<script src="auth.js"></script>
+<script>
+const s = getSession();
+if (!s || s.role !== "admin") location.replace("account.html");
+let pid = null;
+const $ = id => document.getElementById(id);
+function build(p) {
+  let h = p["index.html"];
+  h = h.replace(/<link[^>]+href="style\.css"[^>]*>/i, () => "<style>" + p["style.css"] + "</style>");
+  return h;
+}
+$("go").onclick = async () => {
+  $("go").disabled = true; $("status").textContent = "מכין הצעה, זה יכול לקחת עד דקה...";
+  try {
+    const j = await api("/admin/propose", { request: $("req").value }, s.token);
+    pid = j.id;
+    $("summary").textContent = j.summary;
+    $("files").textContent = "קבצים שישתנו: " + j.changed.join(", ");
+    $("pv").srcdoc = build(j.preview);
+    $("result").hidden = false; $("status").textContent = "";
+  } catch (e) { $("status").textContent = e.message; }
+  $("go").disabled = false;
+};
+$("apply").onclick = async () => {
+  $("apply").disabled = true;
+  try {
+    await api("/admin/apply", { id: pid }, s.token);
+    $("result").hidden = true; $("status").textContent = "פורסם. השינוי יופיע באתר תוך דקה-שתיים.";
+  } catch (e) { $("status").textContent = e.message; }
+  $("apply").disabled = false;
+};
+$("cancel").onclick = () => { pid = null; $("result").hidden = true; };
+</script></body></html>

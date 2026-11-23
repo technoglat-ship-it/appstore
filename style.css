@@ -29,3 +29,6 @@ form label{display:block;margin-bottom:14px;font-weight:500}
 input,textarea{display:block;width:100%;margin-top:4px;padding:10px;font:inherit;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}
 footer{text-align:center;padding:30px 20px;border-top:1px solid var(--line)}
 @media (max-width:640px){.feat{grid-template-columns:1fr}.top{flex-direction:column;gap:6px}}
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:16px}
+.app p{margin:6px 0}
+.btn.off{opacity:.55;cursor:default}

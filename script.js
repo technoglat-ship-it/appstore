@@ -26,24 +26,48 @@ const GH = `https://github.com/${CONFIG.OWNER}/${CONFIG.REPO}`;
 const clean = md => DOMPurify.sanitize(marked.parse(md || ""));
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-async function loadRelease() {
+async function loadApps() {
   const box = document.getElementById("release");
-  const direct = name => `${GH}/releases/latest/download/${encodeURIComponent(name)}`;
+  let apps;
   try {
-    const r = await fetch(`https://api.github.com/repos/${CONFIG.OWNER}/${CONFIG.REPO}/releases/latest`);
+    const r = await fetch("apps.json", { cache: "no-store" });
     if (!r.ok) throw new Error(r.status);
-    const rel = await r.json();
-    const apk = (rel.assets || []).find(a => /\.(apk|xapk|apkm)$/i.test(a.name));
-    const date = new Date(rel.published_at).toLocaleDateString("he-IL");
-    box.innerHTML =
-      `<h3>גרסה ${esc(rel.tag_name)} <small>(${date})</small></h3>` +
-      (apk ? `<p><a class="btn" href="${esc(apk.browser_download_url)}" download>הורד</a></p>` : "<p>אין קובץ להורדה בגרסה זו.</p>") +
-      `<div class="prose">${clean(rel.body)}</div>`;
-  } catch (e) {
-    box.innerHTML = CONFIG.APK_NAME
-      ? `<p><a class="btn" href="${esc(direct(CONFIG.APK_NAME))}" download>הורד</a></p>`
-      : "<p>לא ניתן לטעון את ההורדה כרגע. נסו שוב בעוד כמה דקות.</p>";
+    apps = await r.json();
+  } catch (e) { apps = [{ name: CONFIG.APP_NAME, source: "release" }]; }
+
+  let rel = null;
+  if (apps.some(a => a.source === "release")) {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${CONFIG.OWNER}/${CONFIG.REPO}/releases/latest`);
+      if (r.ok) rel = await r.json();
+    } catch (e) {}
   }
+  const direct = name => `${GH}/releases/latest/download/${encodeURIComponent(name)}`;
+  const isApk = n => /\.(apk|xapk|apkm)$/i.test(n);
+
+  const card = a => {
+    let info = "", btn = '<span class="btn off">בקרוב</span>';
+    if (a.source === "file" && a.file) {
+      btn = `<a class="btn" href="${esc(encodeURI(a.file))}" download>הורד</a>`;
+    } else if (a.source === "release") {
+      const asset = rel && (rel.assets || []).find(x => a.asset ? x.name === a.asset : isApk(x.name));
+      const name = a.asset || CONFIG.APK_NAME;
+      if (asset) {
+        btn = `<a class="btn" href="${esc(asset.browser_download_url)}" download>הורד</a>`;
+        info = `<small>גרסה ${esc(rel.tag_name)} (${new Date(rel.published_at).toLocaleDateString("he-IL")})</small>`;
+      } else if (name) {
+        btn = `<a class="btn" href="${esc(direct(name))}" download>הורד</a>`;
+      } else {
+        btn = '<span class="btn off">לא זמין כרגע</span>';
+      }
+    }
+    return `<article class="box app"><h3>${esc(a.name || "")}</h3>` +
+      (a.desc ? `<p>${esc(a.desc)}</p>` : "") + info + `<p>${btn}</p></article>`;
+  };
+
+  box.className = "";
+  box.innerHTML = `<div class="apps">${apps.map(card).join("")}</div>` +
+    (rel && rel.body ? `<div class="box prose"><h3>מה חדש בגרסה ${esc(rel.tag_name)}</h3>${clean(rel.body)}</div>` : "");
 }
 
 async function loadGuide() {
@@ -73,5 +97,5 @@ form.addEventListener("submit", async ev => {
   } catch (e) { st.textContent = "השליחה נכשלה. אפשר לכתוב לנו ישירות במייל."; }
 });
 
-loadRelease();
+loadApps();
 loadGuide();

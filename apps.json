@@ -5,8 +5,10 @@
     "source": "release"
   },
   {
+  {
     "name": "חנות אפליקציות נוספת",
     "desc": "ריקה כרגע, ההורדה תתווסף בקרוב",
-    "source": "RIKA.apk"
+    "source": "file",
+    "file": "RIKA.apk"
   }
 ]

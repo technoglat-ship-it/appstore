@@ -43,7 +43,7 @@ async function loadApps() {
     } catch (e) {}
   }
   const direct = name => `${GH}/releases/latest/download/${encodeURIComponent(name)}`;
-  const isApk = n => /\.(apk|xapk|apkm|zip)$/i.test(n);
+  const isApk = n => /\.(apk|xapk|apkm|apks|apkapps|zip)$/i.test(n);
 
   const card = a => {
     let info = "", btn = '<span class="btn off">בקרוב</span>';
